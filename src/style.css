@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+:root {
+  --display-font: "Archivo", system-ui, sans-serif;
+  --mono-font: "JetBrains Mono", ui-monospace, monospace;
+
+  --bg: #f3f3ee;
+  --ink: #0a0a0a;
+  --orange: #ff5a1f;
+  --orange-deep: #9b3919;
+  --orange-soft: #ffe4d6;
+  --green: #52c878;
+  --muted: #999;
+  --line: #dcdcd5;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display-font);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  scrollbar-width: none;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(255, 90, 31, 0);
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
