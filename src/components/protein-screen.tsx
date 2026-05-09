@@ -41,9 +41,9 @@ export function ProteinScreen({
       <div style={{ padding: "16px 20px 0" }}>
         <div style={labelTiny}>◉ Today · {todayLabel()}</div>
         <h1 style={hero}>
-          PROTEIN
+          DAILY
           <br />
-          <span style={{ color: "#ff5a1f" }}>INTAKE.</span>
+          <span style={{ color: "#ff5a1f" }}>PROTEIN.</span>
         </h1>
       </div>
 
