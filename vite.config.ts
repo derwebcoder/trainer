@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? "/training/" : "/",
+  base: process.env.GITHUB_PAGES ? "/trainer/" : "/",
   staged: {
     "*": "vp check --fix",
   },
