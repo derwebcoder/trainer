@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
 
 :root {
   --display-font: "Archivo", system-ui, sans-serif;
