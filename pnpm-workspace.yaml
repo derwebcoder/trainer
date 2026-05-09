@@ -5,6 +5,8 @@ catalog:
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
+onlyBuiltDependencies:
+  - sharp
 peerDependencyRules:
   allowAny:
     - vite
