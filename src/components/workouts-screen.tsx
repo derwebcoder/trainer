@@ -44,17 +44,35 @@ export function WorkoutsScreen({
             marginBottom: 4,
           }}
         >
-          <div
-            style={{
-              fontFamily: "var(--mono-font)",
-              fontSize: 11,
-              fontWeight: 500,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: "#999",
-            }}
-          >
-            ◉ {workouts.length} routines
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--mono-font)",
+                fontSize: 11,
+                fontWeight: 500,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                color: "#999",
+                marginBottom: 4,
+              }}
+            >
+              ◉ {workouts.length} routines
+            </div>
+            <h1
+              style={{
+                margin: 0,
+                fontFamily: "var(--display-font)",
+                fontSize: 38,
+                fontWeight: 900,
+                letterSpacing: -1.4,
+                color: "#0a0a0a",
+                lineHeight: 0.95,
+              }}
+            >
+              YOUR
+              <br />
+              <span style={{ color: "#ff5a1f" }}>ROUTINES.</span>
+            </h1>
           </div>
           <button
             onClick={() => setManageMode(!manageMode)}
@@ -69,26 +87,12 @@ export function WorkoutsScreen({
               fontWeight: 800,
               letterSpacing: 0.8,
               textTransform: "uppercase",
+              alignSelf: "flex-start",
             }}
           >
             {manageMode ? "DONE" : "MANAGE"}
           </button>
         </div>
-        <h1
-          style={{
-            margin: 0,
-            fontFamily: "var(--display-font)",
-            fontSize: 38,
-            fontWeight: 900,
-            letterSpacing: -1.4,
-            color: "#0a0a0a",
-            lineHeight: 0.95,
-          }}
-        >
-          YOUR
-          <br />
-          <span style={{ color: "#ff5a1f" }}>ROUTINES.</span>
-        </h1>
         <div
           style={{
             marginTop: 10,
