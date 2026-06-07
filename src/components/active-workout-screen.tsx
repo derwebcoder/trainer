@@ -151,11 +151,10 @@ export function ActiveWorkoutScreen({ workout, motivations, onComplete, onCancel
           flex: 1,
         }}
       >
-        {ordered.map((s, i) => (
+        {ordered.map((s) => (
           <SetRow
             key={s.id}
             set={s}
-            number={i + 1}
             onWeightChange={(w) => updateWeight(s.id, w)}
             onToggleDone={() => toggleDone(s.id)}
           />
@@ -196,12 +195,11 @@ export function ActiveWorkoutScreen({ workout, motivations, onComplete, onCancel
 
 type SetRowProps = {
   set: ActiveSet;
-  number: number;
   onWeightChange: (w: number) => void;
   onToggleDone: () => void;
 };
 
-function SetRow({ set, number, onWeightChange, onToggleDone }: SetRowProps) {
+function SetRow({ set, onWeightChange, onToggleDone }: SetRowProps) {
   const lib = findExercise(set.name);
   return (
     <div
@@ -219,37 +217,6 @@ function SetRow({ set, number, onWeightChange, onToggleDone }: SetRowProps) {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            borderRadius: 6,
-            background: set.done ? "#52c878" : "#0a0a0a",
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "var(--mono-font)",
-            fontSize: 11,
-            fontWeight: 700,
-            flexShrink: 0,
-          }}
-        >
-          {set.done ? (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M5 12l5 5L20 7"
-                stroke="#fff"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          ) : (
-            String(number).padStart(2, "0")
-          )}
-        </div>
-
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
@@ -345,7 +312,6 @@ function SetRow({ set, number, onWeightChange, onToggleDone }: SetRowProps) {
             display: "flex",
             flexWrap: "wrap",
             gap: 3,
-            paddingLeft: 40,
           }}
         >
           {lib.primary.map((m) => (

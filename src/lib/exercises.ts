@@ -26,6 +26,16 @@ export const EXERCISE_LIBRARY: Exercise[] = [
     primary: ["Lats"],
     secondary: ["Biceps", "Rhomboids", "Trapezius", "Rear Deltoids", "Forearms"],
   },
+  {
+    name: "Push Ups",
+    primary: ["Chest"],
+    secondary: ["Triceps", "Anterior Deltoids", "Serratus Anterior", "Core"],
+  },
+  {
+    name: "Biceps Curls",
+    primary: ["Biceps"],
+    secondary: ["Brachialis", "Forearms"],
+  },
 ];
 
 const LIBRARY_INDEX = new Map(EXERCISE_LIBRARY.map((e) => [e.name.toLowerCase(), e]));

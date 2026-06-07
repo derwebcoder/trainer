@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { Workout } from "@/types/workout";
 
 type Props = {
   bodyweight: number;
   setBodyweight: (v: number) => void;
   motivations: string[];
   setMotivations: (v: string[]) => void;
+  workouts: Workout[];
+  setWorkouts: (v: Workout[]) => void;
 };
 
-export function SettingsScreen({ bodyweight, setBodyweight, motivations, setMotivations }: Props) {
+export function SettingsScreen({
+  bodyweight,
+  setBodyweight,
+  motivations,
+  setMotivations,
+  workouts,
+  setWorkouts,
+}: Props) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(String(bodyweight));
+  const [importStatus, setImportStatus] = useState<"ok" | "error" | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const lowEnd = Math.round(bodyweight * 1.6);
   const highEnd = Math.round(bodyweight * 2.0);
@@ -31,6 +43,47 @@ export function SettingsScreen({ bodyweight, setBodyweight, motivations, setMoti
     setMotivations(next);
   };
   const removeMotivation = (i: number) => setMotivations(motivations.filter((_, j) => j !== i));
+
+  const handleExport = () => {
+    const json = JSON.stringify(
+      { version: 1, exportedAt: Date.now(), workouts, bodyweight, motivations },
+      null,
+      2,
+    );
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+    a.download = `trainer-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target?.result as string);
+        if (
+          data.version !== 1 ||
+          !Array.isArray(data.workouts) ||
+          typeof data.bodyweight !== "number" ||
+          !Array.isArray(data.motivations)
+        ) {
+          throw new Error("invalid");
+        }
+        setWorkouts(data.workouts as Workout[]);
+        setBodyweight(data.bodyweight as number);
+        setMotivations(data.motivations as string[]);
+        setImportStatus("ok");
+      } catch {
+        setImportStatus("error");
+      }
+      e.target.value = "";
+      setTimeout(() => setImportStatus(null), 3000);
+    };
+    reader.readAsText(file);
+  };
 
   return (
     <div style={{ padding: "0 0 120px", minHeight: "100%", background: "#f3f3ee" }}>
@@ -347,6 +400,82 @@ export function SettingsScreen({ bodyweight, setBodyweight, motivations, setMoti
             </div>
           )}
         </div>
+      </div>
+
+      <div style={{ padding: "28px 20px 0" }}>
+        <div
+          style={{
+            fontFamily: "var(--mono-font)",
+            fontSize: 11,
+            fontWeight: 500,
+            letterSpacing: 2,
+            color: "#999",
+            textTransform: "uppercase",
+            marginBottom: 10,
+          }}
+        >
+          DATA
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            onClick={handleExport}
+            style={{
+              flex: 1,
+              padding: "12px 0",
+              background: "#0a0a0a",
+              color: "#fff",
+              border: "1.5px solid #0a0a0a",
+              borderRadius: 999,
+              fontFamily: "var(--display-font)",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: 0.8,
+              textTransform: "uppercase",
+            }}
+          >
+            Export JSON
+          </button>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              flex: 1,
+              padding: "12px 0",
+              background: "#fff",
+              color: "#0a0a0a",
+              border: "1.5px dashed #0a0a0a",
+              borderRadius: 999,
+              fontFamily: "var(--display-font)",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: 0.8,
+              textTransform: "uppercase",
+            }}
+          >
+            Import JSON
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleImport}
+            style={{ display: "none" }}
+          />
+        </div>
+        {importStatus && (
+          <div
+            style={{
+              marginTop: 8,
+              fontFamily: "var(--mono-font)",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: 1.5,
+              color: importStatus === "ok" ? "#52c878" : "#9b3919",
+              textAlign: "center",
+            }}
+          >
+            {importStatus === "ok" ? "IMPORTED ✓" : "INVALID FILE"}
+          </div>
+        )}
       </div>
     </div>
   );

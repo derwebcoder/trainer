@@ -102,6 +102,8 @@ export const Main = () => {
           setBodyweight={setBodyweight}
           motivations={motivations}
           setMotivations={setMotivations}
+          workouts={workouts}
+          setWorkouts={setWorkouts}
         />
       )}
       <TabBar tab={tab} onChange={handleTabChange} />

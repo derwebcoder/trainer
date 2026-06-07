@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { aggregateMuscles, relativeDate } from "@/lib/exercises";
+import { relativeDate } from "@/lib/exercises";
 import type { Workout } from "@/types/workout";
-import { MuscleChip } from "./muscle-chip";
+import { Play } from "lucide-react";
 
 type Props = {
   workouts: Workout[];
@@ -153,7 +153,6 @@ export function WorkoutsScreen({
           <WorkoutCard
             key={w.id}
             workout={w}
-            index={i}
             urgent={i === 0}
             manageMode={manageMode}
             onStart={() => onStart(w)}
@@ -168,7 +167,6 @@ export function WorkoutsScreen({
 
 type CardProps = {
   workout: Workout;
-  index: number;
   urgent: boolean;
   manageMode: boolean;
   onStart: () => void;
@@ -176,10 +174,9 @@ type CardProps = {
   onDelete: () => void;
 };
 
-function WorkoutCard({ workout, index, urgent, manageMode, onStart, onEdit, onDelete }: CardProps) {
+function WorkoutCard({ workout, urgent, manageMode, onStart, onEdit, onDelete }: CardProps) {
   const rel = relativeDate(workout.lastDone);
   const isOverdue = workout.lastDone == null || Date.now() - workout.lastDone > 7 * 86400000;
-  const muscles = aggregateMuscles(workout.sets);
   const highlight = urgent && !manageMode;
 
   return (
@@ -199,26 +196,6 @@ function WorkoutCard({ workout, index, urgent, manageMode, onStart, onEdit, onDe
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            background: highlight ? "#ff5a1f" : "#f3f3ee",
-            color: highlight ? "#fff" : "#0a0a0a",
-            border: highlight ? "none" : "1.5px solid #0a0a0a",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "var(--mono-font)",
-            fontSize: 12,
-            fontWeight: 700,
-            flexShrink: 0,
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </div>
-
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
@@ -257,7 +234,7 @@ function WorkoutCard({ workout, index, urgent, manageMode, onStart, onEdit, onDe
                 background: isOverdue ? "#ff5a1f" : "#52c878",
               }}
             />
-            {rel.toUpperCase()} · {workout.sets.length} SETS
+            {rel.toUpperCase()}
           </div>
         </div>
 
@@ -329,13 +306,15 @@ function WorkoutCard({ workout, index, urgent, manageMode, onStart, onEdit, onDe
             }}
             title="Start workout"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 3 }}>
-              <path d="M6 4l14 8-14 8V4z" />
-            </svg>
+            <Play
+              style={{
+                color: "white",
+              }}
+            />
           </button>
         )}
       </div>
-      {muscles.length > 0 && (
+      {/* {muscles.length > 0 && (
         <div
           style={{
             display: "flex",
@@ -348,7 +327,7 @@ function WorkoutCard({ workout, index, urgent, manageMode, onStart, onEdit, onDe
             <MuscleChip key={m} muscle={m} size="sm" />
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
